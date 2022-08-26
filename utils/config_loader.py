@@ -3,8 +3,7 @@ import yaml
 
 # Script configuration manager
 class configuration:
-    def __init__(self, root, file):
-        self._root = root
+    def __init__(self, file):
         self._config = self._open_config(file)
     
     # ****************
@@ -20,14 +19,14 @@ class configuration:
         paths = self._config.get(key)
         # Resolve all relative file paths
         for index, value in paths.items():
-            paths[index] = self._root / base / value 
+            paths[index] = self.get_root() / base / value 
         return paths
 
     def _get_list(self, key: str, base = ''):
         paths = self._config.get(key)
         # Resolve all relative file paths
         for index, value in enumerate(paths):
-            paths[index] = self._root / base / value
+            paths[index] = self.get_root() / base / value
         return paths
     
     # ****************
@@ -35,6 +34,9 @@ class configuration:
     # ****************
     def get_config(self):
         return self._config
+
+    def get_root(self):
+        return self._config.get("root")
 
     def get_domain(self):
         return self._config.get("domain")

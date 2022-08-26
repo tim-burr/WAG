@@ -9,11 +9,10 @@ from utils.template_loader import *
 from utils.generator import *
 
 # Directories
-CURR_DIR = Path(__file__).parent.resolve()
-ROOT_DIR = Path(__file__).parents[2].resolve()
+CONF_DIR = Path(__file__).parent[1].resolve()
 
 # Files
-DEF_CONFIG = CURR_DIR / "config.yml" # Default
+DEF_CONFIG = CONF_DIR / "config.yml" # Default build config
 
 ########################
 # Main
@@ -21,13 +20,13 @@ DEF_CONFIG = CURR_DIR / "config.yml" # Default
 if __name__=="__main__":
     # Handle program inputs
     try:
-        filepath = sys.argv[1]
+        file = sys.argv[1]
     except IndexError:
-        print("Empty or invalid configuration input... Using default")
-        filepath = DEF_CONFIG
-
+        print("Empty or invalid configuration input... Trying default")
+        file = DEF_CONFIG
+        
     # Load build config data
-    config = configuration(ROOT_DIR, filepath)
+    config = configuration(file)
     
     # Buffer filepaths from config data
     paths = config.get_paths()
