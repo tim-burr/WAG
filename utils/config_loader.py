@@ -1,4 +1,5 @@
 # Imports
+from pathlib import Path
 import yaml
 
 # Script configuration manager
@@ -15,18 +16,19 @@ class configuration:
         print("Build configuration loaded")
         return loaded
 
-    def _get_dict(self, key: str, base = ''):
+    def _get_structure(self, key: str, base = ''):
         paths = self._config.get(key)
+        
+        if isinstance(paths, dict):
+            collection = paths.items()
+        elif isinstance(paths, list):
+            collection = enumerate(paths)
+        else:
+            return
+        
         # Resolve all relative file paths
-        for index, value in paths.items():
-            paths[index] = self.get_root() / base / value 
-        return paths
-
-    def _get_list(self, key: str, base = ''):
-        paths = self._config.get(key)
-        # Resolve all relative file paths
-        for index, value in enumerate(paths):
-            paths[index] = self.get_root() / base / value
+        for index, value in collection:
+            paths[index] = Path(self.get_root()) / base / value 
         return paths
     
     # ****************
@@ -45,13 +47,13 @@ class configuration:
         return self._config.get("homepage")
 
     def get_paths(self):
-        return self._get_dict("paths")
+        return self._get_structure("paths")
     
     def get_templates(self, path = ''):
-        return self._get_dict("templates", path)
+        return self._get_structure("templates", path)
 
     def get_includes(self, path = ''):
-        return self._get_list("includes", path)
+        return self._get_structure("includes", path)
 
     def get_tokens(self):
         return self._config.get("tokens")

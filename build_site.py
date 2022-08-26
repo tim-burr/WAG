@@ -9,7 +9,7 @@ from utils.template_loader import *
 from utils.generator import *
 
 # Directories
-CONF_DIR = Path(__file__).parent[1].resolve()
+CONF_DIR = Path(__file__).parents[1].resolve()
 
 # Files
 DEF_CONFIG = CONF_DIR / "config.yml" # Default build config
