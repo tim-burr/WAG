@@ -11,12 +11,12 @@ from utils.config_loader import *
 from utils.template_loader import *
 
 class generator:
-    def __init__(self, config: configuration):
-        self._config = config
-        self._homepage = config.get_homepage()
-        self._paths = config.get_paths()
-        self._tokens = config.get_tokens()
-        self._pretty = config.get_pretty()
+    def __init__(self, config: configuration, templates: template):
+        self._homepage = config.homepage
+        self._paths = config.paths
+        self._tokens = config.tokens
+        self._pretty = config.ispretty
+        self._templates = templates
     
     # ****************
     # Private methods
@@ -35,18 +35,18 @@ class generator:
     # ****************
     # Public methods
     # ****************
-    def generate(self, page, templates: template):
-        # Instance references
+    def generate(self, page):
+        # Instance variables
         build_dir = self._paths.get("build")
-        page_name = Path(page).stem  # Filename w/o extension
+        page_name = Path(page).stem   # Filename w/o extension
 
         # Convert custom page into HTML
         metadata, content = self._parse_page(page)
         html_content = self._md_to_html(content)
 
         # Get page layout components from templates
-        page_template = metadata.get("template")
-        layouts = templates.get_files(page_template)
+        page_layout = metadata.get("template")
+        layouts = self._templates.get_files(page_layout)
         
         # Define recognized in-page template tags
         params = {
@@ -56,7 +56,7 @@ class generator:
             "{content}": html_content,
             "{footer}": layouts.get("footer")
          }
-        params = params | self._tokens # Append user-defined tokens
+        params = params | self._tokens  # Append user-defined tokens
 
         # Set active nav menu button
         # Adds new dict key/value pair if needed

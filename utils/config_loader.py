@@ -17,46 +17,56 @@ class configuration:
         return loaded
 
     def _get_structure(self, key: str, base = ''):
-        paths = self._config.get(key)
+        paths = self.config.get(key)
         
         if isinstance(paths, dict):
             collection = paths.items()
         elif isinstance(paths, list):
             collection = enumerate(paths)
         else:
+            print("Invalid configuration data structure")
             return
         
         # Resolve all relative file paths
-        for index, value in collection:
-            paths[index] = Path(self.get_root()) / base / value 
+        for i, value in collection:
+            paths[i] = Path(self.root) / base / value 
         return paths
     
     # ****************
     # Public methods
     # ****************
-    def get_config(self):
+    @property
+    def config(self):
         return self._config
 
-    def get_root(self):
-        return self._config.get("root")
+    @property
+    def root(self):
+        return self.config.get("root")
 
-    def get_domain(self):
-        return self._config.get("domain")
+    @property
+    def domain(self):
+        return self.config.get("domain")
 
-    def get_homepage(self):
-        return self._config.get("homepage")
+    @property
+    def homepage(self):
+        return self.config.get("homepage")
 
-    def get_paths(self):
+    @property
+    def paths(self):
         return self._get_structure("paths")
     
-    def get_templates(self, path = ''):
+    @property
+    def templates(self, path = ''):
         return self._get_structure("templates", path)
 
-    def get_includes(self, path = ''):
+    @property
+    def includes(self, path = ''):
         return self._get_structure("includes", path)
 
-    def get_tokens(self):
-        return self._config.get("tokens")
+    @property
+    def tokens(self):
+        return self.config.get("tokens")
 
-    def get_pretty(self):
-        return self._config.get("html_pretty")
+    @property
+    def ispretty(self):
+        return self.config.get("html_pretty")

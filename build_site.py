@@ -12,7 +12,7 @@ from utils.generator import *
 CONF_DIR = Path(__file__).parents[1].resolve()
 
 # Files
-DEF_CONFIG = CONF_DIR / "config.yml" # Default build config
+DEF_CONFIG = CONF_DIR / "config.yml"  # Default build config
 
 ########################
 # Main
@@ -28,10 +28,9 @@ if __name__=="__main__":
     # Load build config data
     config = configuration(file)
     
-    # Buffer filepaths from config data
-    paths = config.get_paths()
-    page_dir = paths.get("pages")
-    build_dir = paths.get("build")
+    # Buffer directory paths from config data
+    page_dir = config.paths.get("pages")
+    build_dir = config.paths.get("build")
 
     # Remove old build directory, if exists
     delete_directory(build_dir)
@@ -39,18 +38,17 @@ if __name__=="__main__":
     create_directory(build_dir)
 
     # Directly copy Includes into build directory
-    includes = config.get_includes()
-    for i, path in enumerate(includes):
-        copy_recursive(includes[i], build_dir)
+    for i, path in enumerate(config.includes):
+        copy_recursive(path, build_dir)
 
     # Initialize template lookup table
     templates = template(config)
     
     # Generate one HTML file per found Markdown file
-    run = generator(config)
+    run = generator(config, templates)
 
     website = page_dir.rglob("*.md")
     for page in website:
-        run.generate(page, templates)
+        run.generate(page)
 
-    print("\nWebsite generated!")
+    print("\nWebsite generated!\n")

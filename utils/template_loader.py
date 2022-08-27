@@ -5,10 +5,10 @@ from utils.drive_tools import *
 
 class template:
     def __init__(self, config):
-        self._dir = Path(config.get_paths().get("templates"))
+        self._dir = Path(config.paths.get("templates"))
         self._filenames = walk_dir(self._dir)
         self._templates = {}
-        self._open_essentials(config.get_templates(self._dir))
+        self._open_essentials(config.templates(self._dir))
 
     # ****************
     # Private methods
@@ -27,11 +27,11 @@ class template:
         except:
             print("Using default template")
             content = self._templates["default"]
-        return {'content': content} # Rename dict key to be standard no matter the page name
+        return {'content': content}  # Rename dict key to be standard no matter the page name
 
     # ****************
     # Public methods
     # ****************
     def get_files(self, filename):
         specific = self._open_specific(filename)
-        return self._templates | specific # Return merged dict of all necessary templates
+        return self._templates | specific  # Return merged dict of all necessary templates

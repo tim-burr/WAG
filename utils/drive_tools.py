@@ -25,7 +25,7 @@ def walk_dir(dir):
     files = {}
     for file in Path(dir).rglob('*.*'):
         files[file.stem] = file.resolve()
-    return files # (filename, absolute path)
+    return files  # (filename, absolute path)
 
 def open_file(file, encoding='utf-8'):
     with open(file, 'r', encoding=encoding) as f:
