@@ -38,7 +38,8 @@ if __name__=="__main__":
     create_directory(build_dir)
 
     # Directly copy Includes into build directory
-    for i, path in enumerate(config.includes):
+    includes = config.get_includes()
+    for i, path in enumerate(includes):
         copy_recursive(path, build_dir)
 
     # Initialize template lookup table

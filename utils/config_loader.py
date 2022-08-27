@@ -35,6 +35,16 @@ class configuration:
     # ****************
     # Public methods
     # ****************
+    def get_templates(self, path = ''):
+        return self._get_structure("templates", path)
+
+    def get_includes(self, path = ''):
+        return self._get_structure("includes", path)
+
+    @property
+    def paths(self):
+        return self._get_structure("paths")
+    
     @property
     def config(self):
         return self._config
@@ -50,18 +60,6 @@ class configuration:
     @property
     def homepage(self):
         return self.config.get("homepage")
-
-    @property
-    def paths(self):
-        return self._get_structure("paths")
-    
-    @property
-    def templates(self, path = ''):
-        return self._get_structure("templates", path)
-
-    @property
-    def includes(self, path = ''):
-        return self._get_structure("includes", path)
 
     @property
     def tokens(self):

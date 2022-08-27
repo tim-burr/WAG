@@ -8,7 +8,7 @@ class template:
         self._dir = Path(config.paths.get("templates"))
         self._filenames = walk_dir(self._dir)
         self._templates = {}
-        self._open_essentials(config.templates(self._dir))
+        self._open_essentials(config.get_templates(self._dir))
 
     # ****************
     # Private methods
