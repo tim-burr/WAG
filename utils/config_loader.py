@@ -1,5 +1,7 @@
 # Imports
+# Standard
 from pathlib import Path
+# Third Party
 import yaml
 
 # Script configuration manager

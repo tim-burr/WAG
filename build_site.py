@@ -1,12 +1,12 @@
 # Imports
-# System Utilities
+# Standard
 import sys
 from pathlib import Path
-# Custom
-from utils.drive_tools import *
-from utils.config_loader import *
-from utils.template_loader import *
-from utils.generator import *
+# Local
+import utils.drive_tools as drive
+import utils.config_loader as cfg
+import utils.template_loader as tpl
+import utils.generator as gen
 
 # Directories
 CONF_DIR = Path(__file__).parents[1].resolve()
@@ -26,27 +26,27 @@ if __name__=="__main__":
         file = DEF_CONFIG
         
     # Load build config data
-    config = configuration(file)
+    config = cfg.configuration(file)
     
     # Buffer directory paths from config data
     page_dir = config.paths.get("pages")
     build_dir = config.paths.get("build")
 
     # Remove old build directory, if exists
-    delete_directory(build_dir)
+    drive.delete_directory(build_dir)
     # Create new, empty build directory
-    create_directory(build_dir)
+    drive.create_directory(build_dir)
 
     # Directly copy Includes into build directory
     includes = config.get_includes()
     for i, path in enumerate(includes):
-        copy_recursive(path, build_dir)
+        drive.copy_recursive(path, build_dir)
 
     # Initialize template lookup table
-    templates = template(config)
+    templates = tpl.template(config)
     
     # Generate one HTML file per found Markdown file
-    run = generator(config, templates)
+    run = gen.generator(config, templates)
 
     website = page_dir.rglob("*.md")
     for page in website:

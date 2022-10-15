@@ -16,7 +16,7 @@ Visit the [release page](https://github.com/tim-burr/WAG/releases) to download t
 
 ## Configure
 ### YAML build options
-![YAML Configuration Example]('/data/img/config_example.PNG')
+To Do
 
 ## Create Page
 ### Using Markdown

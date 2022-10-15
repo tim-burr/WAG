@@ -1,11 +1,11 @@
 # Imports
-# System Utilities
+# Standard
 from pathlib import Path
-# Document Parsers
+# Third Party
 import frontmatter
 from markdown import markdown
 from yattag import indent
-# Custom
+# Local
 from utils.drive_tools import *
 from utils.config_loader import *
 from utils.template_loader import *
@@ -62,7 +62,7 @@ class generator:
         # Adds new dict key/value pair if needed
         category = metadata["category"]
         try:
-            params[f"{{inactive_{category}}}"] = "pure-menu-selected"
+            params[f"{{-{category}}}"] = "" # Remove token value to activate menu button
         except:
             print("No active menu links to update")
 
@@ -95,7 +95,7 @@ class generator:
             build_subdir = build_dir / category / page_name
             new_file = build_subdir / "index.html"
        
-        # Create build subdirectory if it doesn't exist
+        # Create directory to store new page, if does not exist
         create_directory(build_subdir)
 
         # Save HTML buffer to new file

@@ -5,8 +5,8 @@
 # Required: Absolute path to website source directory
 root: 'absolute\file\path'
 
-# Optional: Domain name
-domain: 'domain'
+# Optional: Root domain
+domain: 'domain-name.com'
 # Required: Name of website homepage without file extension
 homepage: 'name'
 
@@ -16,25 +16,33 @@ paths:
   pages: 'relative\path'
   templates: 'relative\path'
 
-# Required: Relative paths (from root)
+# Required: Relative paths (from templates subdirectory)
 templates:
   default: 'relative\path\default.html'
   header: 'relative\path\header.html'
   footer: 'relative\path\footer.html'
 
-# Required: Relative paths (from root).
-# Note: These files are directly copied into the directory specified at "paths/build". 
+# Optional: Relative paths (from root)
+# Note: The full contents of these subdirectories are copied into the build directory
 includes:
-  - _assets
-  - _data
+  - 'relative\path'
+  - 'relative\path'
 
-# Required: User-defined tags to populate in user templates.
+# Optional: Global user-defined tags to populate in custom templates
 # Format is '{tag}': 'value'
 tokens:
   '{tag}': 'value'
 
-# Optional: Set true for formatted HTML outputs. Set false for unformatted (faster build time).
+# Required:
+# true = formatted HTML outputs
+# false = unformatted (faster build time)
 html_pretty: false
 
+####################
+# EXPERIMENTAL
+####################
 
-
+# Required:
+# true = rebuild website entirely, regardless of unchanged pages
+# false = only compile modified pages and templates (faster build time)
+clean_build: false
