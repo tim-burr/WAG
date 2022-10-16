@@ -6,12 +6,12 @@ import frontmatter
 from markdown import markdown
 from yattag import indent
 # Local
-from utils.drive_tools import *
-from utils.config_loader import *
-from utils.template_loader import *
+import utils.drive_tools as drive
+import utils.config_loader as cfg
+import utils.template_loader as tpl
 
 class generator:
-    def __init__(self, config: configuration, templates: template):
+    def __init__(self, config: cfg.configuration, templates: tpl.template):
         self._homepage = config.homepage
         self._paths = config.paths
         self._tokens = config.tokens
@@ -28,8 +28,8 @@ class generator:
         return metadata, content
 
     def _md_to_html(self, content):
-        # Convert Markdown into HTML
-        html = markdown(content)
+        # Convert Markdown into HTML; Markdown inside HTML block tags allowed
+        html = markdown(content, extensions=['md_in_html'])
         return html
     
     # ****************
@@ -96,7 +96,7 @@ class generator:
             new_file = build_subdir / "index.html"
        
         # Create directory to store new page, if does not exist
-        create_directory(build_subdir)
+        drive.create_directory(build_subdir)
 
         # Save HTML buffer to new file
         with open(new_file, 'w') as f:
