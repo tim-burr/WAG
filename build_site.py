@@ -5,7 +5,6 @@ from pathlib import Path
 # Local
 import utils.drive_tools as drive
 import utils.config_loader as cfg
-import utils.template_loader as tpl
 import utils.generator as gen
 
 # Directories
@@ -26,7 +25,7 @@ if __name__=="__main__":
         file = DEF_CONFIG
         
     # Load build config data
-    config = cfg.configuration(file)
+    config = cfg.Configuration(file)
     
     # Buffer directory paths from config data
     page_dir = config.paths.get("pages")
@@ -38,17 +37,13 @@ if __name__=="__main__":
     drive.create_directory(build_dir)
 
     # Directly copy Includes into build directory
-    includes = config.get_includes()
-    for i, path in enumerate(includes):
+    for i, path in enumerate(config.includes):
         drive.copy_recursive(path, build_dir)
 
-    # Initialize template lookup table
-    templates = tpl.template(config)
-    
-    # Generate one HTML file per found Markdown file
-    run = gen.generator(config, templates)
-
+    # Generate one HTML file per found source file
+    run = gen.Generator(config)
     website = page_dir.rglob("*.md")
+    
     for page in website:
         run.generate(page)
 

@@ -8,15 +8,11 @@ from yattag import indent
 # Local
 import utils.drive_tools as drive
 import utils.config_loader as cfg
-import utils.template_loader as tpl
 
-class generator:
-    def __init__(self, config: cfg.configuration, templates: tpl.template):
-        self._homepage = config.homepage
-        self._paths = config.paths
         self._tokens = config.tokens
-        self._pretty = config.ispretty
-        self._templates = templates
+class Generator:
+    def __init__(self, config: cfg.Configuration):
+        self._config = config
     
     # ****************
     # Private methods
@@ -27,27 +23,24 @@ class generator:
             metadata, content = frontmatter.parse(f.read())
         return metadata, content
 
-    def _md_to_html(self, content):
+    def _md_to_html(self, content) -> None:
         # Convert Markdown into HTML; Markdown inside HTML block tags allowed
         html = markdown(content, extensions=['md_in_html'])
         return html
     
-    # ****************
-    # Public methods
-    # ****************
-    def generate(self, page):
+    def _generate_from_md(self, page) -> None:
         # Instance variables
-        build_dir = self._paths.get("build")
-        page_name = Path(page).stem   # Filename w/o extension
+        build_dir = self._config.paths.get("build")
+        page_name = Path(page).stem  # Filename w/o extension
 
         # Convert custom page into HTML
         metadata, content = self._parse_page(page)
         html_content = self._md_to_html(content)
 
-        # Get page layout components from templates
+         # Get page layout components from templates
         page_layout = metadata.get("template")
-        layouts = self._templates.get_files(page_layout)
-        
+        layouts = self._config.find_template(page_layout)
+
         # Define recognized in-page template tags
         params = {
             "{title}": metadata.get("title"),
@@ -62,7 +55,7 @@ class generator:
         # Adds new dict key/value pair if needed
         category = metadata["category"]
         try:
-            params[f"{{-{category}}}"] = "" # Remove token value to activate menu button
+            params[f"{{-{category}}}"] = ""  # Remove token value to activate menu button
         except:
             print("No active menu links to update")
 
@@ -72,9 +65,9 @@ class generator:
         for key, value in params.items():
             if key in html_doc:
                 html_doc = html_doc.replace(key, value)
-        
+
         # Prettify HTML (compile option)
-        if self._pretty:
+        if self._config.ispretty:
             html_doc = indent(html_doc)
         
         # Determine final path of new page
@@ -82,7 +75,7 @@ class generator:
             # Numeric error page saves to build root
             build_subdir = build_dir
             new_file = (build_subdir / page_name).with_suffix(".html")
-        elif page_name == self._homepage:
+        elif page_name == self._config.homepage:
             # Homepage saves to build root
             build_subdir = build_dir
             new_file = build_subdir / "index.html"
@@ -102,4 +95,24 @@ class generator:
         with open(new_file, 'w') as f:
             f.write(html_doc)
 
-        print("Page generated")
+        return html_doc
+
+    def _generate_from_html(self, page) -> str:
+        # TODO: Implement direct html file handling
+        html_doc: str
+        return html_doc
+    
+    # ****************
+    # Public methods
+    # ****************
+    def generate(self, page) -> None:      
+        # Handle input file type
+        match page.suffix:
+            case ".md":
+                self._generate_from_md(page)
+            case ".html":
+                self._generate_from_html(page)
+            case _:
+                return
+
+        print(f'Generate: "{page.stem}" page')
