@@ -3,16 +3,14 @@
 import shutil
 from pathlib import Path
 
-def copy_file(src, dest) -> None | bool:
+def copy_file(src, dest) -> None:
     try:
+        print(f"Copy: file {src} into {dest}")
         shutil.copy(src, dest)
     except shutil.SameFileError:
-        print("Error: Source and destination are the same file.")
-        return False
+        print("Error: Source and destination are the same file")
     except IsADirectoryError:
-        print("Error: The destination is a directory.")
-        return False
-    print(f"Copy: file {src} into {dest}")
+        print("Error: The destination is a directory")
 
 def copy_directory(src, dest) -> None:
     print(f"Copy: {src}\\ into {dest}\\")
@@ -26,9 +24,9 @@ def walk_dir(dir) -> dict:
     files = {}
     for file in Path(dir).rglob('*.*'):
         files[file.stem] = file.resolve()
-    return files  # {filename, absolute path}
+    return files  # {'filename': /absolute/path/}
 
-def open_file(file, encoding='utf-8') -> str:
+def read_file(file, encoding='utf-8') -> str:
     with open(file, 'r', encoding=encoding) as f:
         return f.read()
 

@@ -15,12 +15,7 @@ paths:
   build: 'relative\path'
   pages: 'relative\path'
   templates: 'relative\path'
-
-# Required: Relative paths (from templates subdirectory)
-templates:
-  default: 'relative\path\default.html'
-  header: 'relative\path\header.html'
-  footer: 'relative\path\footer.html'
+  modules: 'relative\path'
 
 # Optional: Relative paths (from root)
 # Note: The full contents of these subdirectories are copied into the build directory
@@ -28,10 +23,17 @@ includes:
   - 'relative\path'
   - 'relative\path'
 
+# Optional: Default value used if page front matter does not specify
+defaults:
+  title: 'title'
+  description: 'description'
+  category: 'category'
+  template: 'filename'
+
 # Optional: Global user-defined tags to populate in custom templates
-# Format is '{tag}': 'value'
+# Format is tag: 'value'
 tokens:
-  '{tag}': 'value'
+  tag: 'value'
 
 # Required:
 # true = formatted HTML outputs
