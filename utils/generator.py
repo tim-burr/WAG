@@ -40,8 +40,8 @@ class Generator:
         template = metadata.get("template")
         html_doc = self._config.templates.find(template)
 
-        modules = self._config.modules.addt({'content':html_content})
         defaults = self._config.defaults.substitute(metadata)  # Populate tags with user defaults
+        modules = self._config.modules.addt({'content':html_content})
         tokens = self._config.tokens.addt(defaults)  # Store page-level template tags
         category = tokens.get("{category}", "")
         active = {f"{{{category}}}":""}

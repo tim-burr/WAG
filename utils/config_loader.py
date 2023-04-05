@@ -51,12 +51,12 @@ class Configuration:
         return defaults
 
     def _load_block(self, path, default='') -> bok.Block:
-        dir = self.paths.get(path, "")
+        dir = self.paths.get(path)
         block = bok.Block(dir, default)
         return block
 
     def _load_templates(self) -> bok.Block:
-        default = self.defaults.defaults.get("template", "")
+        default = self.defaults.defaults.get("template")
         templates = self._load_block("templates", default)
         return templates
     

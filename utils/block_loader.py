@@ -17,12 +17,15 @@ class Block:
             block = self.blocks[name]  # Check if block was previously loaded
         except KeyError:
             try:
-                path = self._files[name]  
-                self.blocks[name] = drive.read_file(path)  # Try loading content from disk
-                block = self.blocks[name]
+                temp = name                
+                path = self._files[temp]  # Try finding block path for first time by name
             except KeyError:
                 print("Data not found, using default")
-                block = self.blocks[self._default]
+                temp = self._default
+                path = self._files.get(temp)  # Find default block path by name
+            finally:
+                self.blocks[temp] = drive.read_file(path)  # Load content from disk
+                block = self.blocks[temp]
         finally:
             return block
 
