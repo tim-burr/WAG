@@ -38,7 +38,7 @@ class Configuration:
             collection = enumerate(paths)
         else:
             print("Invalid configuration data structure")
-            return
+            return None
         
         # Resolve all relative file paths
         for i, path in collection:

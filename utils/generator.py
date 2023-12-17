@@ -98,7 +98,7 @@ class Generator:
     # ****************
     # Public methods
     # ****************
-    def generate(self, page) -> None:      
+    def generate(self, page):
         print(f'Generate: "{page.stem}" page')
 
         # Handle input file type

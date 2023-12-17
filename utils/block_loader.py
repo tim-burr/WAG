@@ -29,7 +29,7 @@ class Block:
         finally:
             return block
 
-    def all(self) -> None:
+    def all(self):
         for k,v in self._files.items():
             self.blocks[k] = drive.read_file(v)
 
