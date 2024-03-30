@@ -1,10 +1,15 @@
+#!/usr/bin/env python3
+
 # Imports
-# Standard
 import sys
-# Local
+# Custom
 import utils.drive_tools as drive
 import utils.config_loader as cfg
 import utils.generator as gen
+
+
+"""Main script: Run to build a website directory."""
+__author__ = "Timothy Burroughs"
 
 ########################
 # Main
@@ -18,7 +23,7 @@ def main():
         file = input("Enter absolute path to YAML config file: ")
     finally:
         config = cfg.Configuration(file)
-    
+
     # Buffer directory paths from config data
     page_dir = config.paths.get("pages")
     build_dir = config.paths.get("build")
@@ -35,7 +40,7 @@ def main():
     # Generate one HTML file per found source file
     run = gen.Generator(config)
     website = page_dir.rglob("*.md")
-    
+
     for page in website:
         run.generate(page)
 

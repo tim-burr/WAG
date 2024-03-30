@@ -1,12 +1,12 @@
 # Imports
-# Standard
 from pathlib import Path
 # Third Party
 import yaml
-# Local
+# Custom
 import utils.default_loader as dft
 import utils.block_loader as bok
 import utils.token_loader as tok
+
 
 # Script configuration manager
 class Configuration:
@@ -18,7 +18,7 @@ class Configuration:
         self._templates = self._load_templates()
         self._modules = self._load_modules()
         self._tokens = self._load_tokens("tokens")
-    
+
     # ****************
     # Private methods
     # ****************
@@ -28,7 +28,7 @@ class Configuration:
         print("Build configuration loaded")
         return loaded
 
-    def _load_structure(self, key: str) -> dict | list | None:       
+    def _load_structure(self, key: str) -> dict | list | None:
         paths = self.config.get(key)
 
         # Determine iterable type
@@ -39,12 +39,12 @@ class Configuration:
         else:
             print("Invalid configuration data structure")
             return None
-        
+
         # Resolve all relative file paths
         for i, path in collection:
             paths[i] = Path(self.root) / path
         return paths
-    
+
     def _load_defaults(self) -> dft.Default:
         defaults = self.config.get("defaults")
         defaults = dft.Default(defaults)
@@ -59,21 +59,21 @@ class Configuration:
         default = self.defaults.defaults.get("template")
         templates = self._load_block("templates", default)
         return templates
-    
+
     def _load_modules(self) -> tok.Token:
         modules = self._load_block("modules")
         modules.all()
         modules = tok.Token(modules.blocks)
         return modules
-    
+
     def _load_tokens(self, key: str) -> tok.Token:
         tokens = self.config.get(key)
         tokens = tok.Token(tokens)
         return tokens
-    
+
     # ****************
     # Public methods
-    # ****************   
+    # ****************
     @property
     def config(self) -> dict:
         return self._config
@@ -113,7 +113,7 @@ class Configuration:
     @property
     def defaults(self) -> dft.Default:
         return self._defaults
-    
+
     @property
     def ispretty(self) -> bool:
         return self.config.get("html_pretty")
