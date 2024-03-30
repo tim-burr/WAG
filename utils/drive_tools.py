@@ -1,11 +1,11 @@
 # Imports
-# Standard
 import shutil
 from pathlib import Path
 
+
 def copy_file(src, dest):
     try:
-        print(f"Copy: file {src} into {dest}")
+        print(f"Copy: file {src} into file {dest}")
         shutil.copy(src, dest)
     except shutil.SameFileError:
         print("Error: Source and destination are the same file")
@@ -34,7 +34,7 @@ def create_directory(dir):
     if not Path(dir).exists():
         print(f"Create: directory {dir}\\")
         Path.mkdir(dir, parents=True)
-    
+
 def delete_directory(dir):
     if Path(dir).exists():
         print(f"Remove: directory {dir}\\")
