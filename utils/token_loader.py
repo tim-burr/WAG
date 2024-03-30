@@ -1,15 +1,12 @@
-# Imports
-
 class Token():
     def __init__(self, tokens: dict):
-        self._tokens = {}
-        self._tokens = self.addt(tokens)
+        self.tokens = {}
+        self.tokens = self.addt(tokens)
 
     # ****************
     # Private methods
     # ****************
-    @staticmethod
-    def _format(keys: list) -> list:
+    def _format(self, keys: list) -> list:
         formatted = [f"{{{id}}}" for id in keys]
         return formatted
 
@@ -25,7 +22,3 @@ class Token():
         new = dict(zip(keys, values))  # Combine new keys with existing values
         self.tokens.update(new)  # Overwrites entries with latest token definitions
         return self.tokens
-
-    @property
-    def tokens(self) -> dict:
-        return self._tokens

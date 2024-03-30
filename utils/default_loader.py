@@ -1,9 +1,7 @@
-# Imports
-
 class Default():
     def __init__(self, defaults: dict):
-        self._defaults = defaults
-    
+        self.defaults = defaults
+
     # ****************
     # Public methods
     # ****************
@@ -12,7 +10,3 @@ class Default():
             if v == 'default':
                 tokens[k] = self.defaults.get(k)  # Only update if key matches
         return tokens
-    
-    @property
-    def defaults(self) -> dict:
-        return self._defaults
